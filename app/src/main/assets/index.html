@@ -18,26 +18,26 @@
         <div class="defaults">
             <div>
                 Functional:
-                <button id="map">map</button>
-                <button id="filter">filter</button>
-                <button id="reduce">reduce</button>
+                <button onclick="appendMap()" id="map">map</button>
+                <button onclick="appendFilter()">filter</button>
+                <button onclick="appendReduce()">reduce</button>
             </div>
             <hr />
             <div>
                 Operators:
-                <button id="add">+</button>
-                <button id="sub">-</button>
-                <button id="mul">*</button>
-                <button id="exp">^</button>
-                <button id="eq">=</button>
+                <button onclick="appendAdd()">+</button>
+                <button onclick="appendSub()">-</button>
+                <button onclick="appendMul()">*</button>
+                <button onclick="appendExp()">^</button>
+                <button>=</button>
             </div>
             <hr />
             <div>
                 Syntax:
-                <button id="lam">&#955;</button>
-                <button id="arr">[ ]</button>
-                <button id="var">var</button>
-                <button id="cond">if</button>
+                <button onclick="appendLambda()">&#955;</button>
+                <button onclick="appendList()">[ ]</button>
+                <button onclick="appendVar()">var</button>
+                <button onclick="appendCond()">if</button>
             </div>
             <hr />
             <div>
@@ -48,9 +48,58 @@
         </div>
     </div>
     <script type="text/javascript">
-            var consoleLine = JavaToJSInterfaceVar.getConsoleLine();
+            var consoleLine = "";
             console.log(consoleLine);
-            document.getElementById("repl").innerHTML = "<p>" + consoleLine + "</p>";
+            document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            function appendAdd() {
+                consoleLine += "+";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+
+            }
+            function appendMul() {
+                consoleLine += "*";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendSub() {
+                consoleLine += "-";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendDiv() {
+                consoleLine += "/";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendExp() {
+                consoleLine += "**";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendEq() {
+                consoleLine += "=";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendVar() {
+            }
+            function appendMap() {
+                consoleLine += "map(";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendFilter() {
+                consoleLine += "filter(";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendReduce() {
+                consoleLine += "reduce(";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendLambda() {
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function appendList() {
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function flushLine() {
+                consoleLine = "";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
     </script>
     </body>
 </html>
