@@ -1,112 +1,131 @@
 <html>
-    <head>
-        <style>
-            #repl {
-                min-height: 400px;
-            }
-            button {
-                font-size: 20px;
-            }
-            .defaults {
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-    <div id="repl">
-    </div>
-        <div class="defaults">
-            <div>
-                Functional:
-                <button onclick="appendMap()" id="map">map</button>
-                <button onclick="appendFilter()">filter</button>
-                <button onclick="appendReduce()">reduce</button>
-            </div>
-            <hr />
-            <div>
-                Operators:
-                <button onclick="appendAdd()">+</button>
-                <button onclick="appendSub()">-</button>
-                <button onclick="appendMul()">*</button>
-                <button onclick="appendExp()">^</button>
-                <button>=</button>
-            </div>
-            <hr />
-            <div>
-                Syntax:
-                <button onclick="appendLambda()">&#955;</button>
-                <button onclick="appendList()">[ ]</button>
-                <button onclick="appendVar()">var</button>
-                <button onclick="appendCond()">if</button>
-            </div>
-            <hr />
-            <div>
-                Libraries:
-                <button>math</button>
-                <button>draw</button>
-                <button onclick="flushLine()">Enter</button>
-            </div>
-            <hr />
-            <div>
-                <button onclick="append1()">1</button>
-                <button onclick="append2()">2</button>
-                <button onclick="append3()">3</button>
-                <br />
-                <button onclick="append4()">4</button>
-                <button onclick="append5()">5</button>
-                <button onclick="append6()">6</button>
-                <br />
-                <button onclick="append7()">7</button>
-                <button onclick="append8()">8</button>
-                <button onclick="append9()">9</button>
-                <br />
-                <button onclick="append4()">0</button>
-                <button onclick="append5()">.</button>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-            var consoleLine = "";
-            console.log(consoleLine);
-            document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            function appendAdd() {
-                consoleLine += "+";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+<head>
+    <style>
+        #repl {
+        height: 400px;
+        overflow-y: scroll;
+        }
+        button {
+        font-size: 20px;
+        }
+        .defaults {
+        text-align: center;
+        width: 100%;
+        }
+        .borderless {
+        border: 0;
+        outline: none;
+        outline-offset: 0;
+        }
 
-            }
-            function appendMul() {
-                consoleLine += "*";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function appendSub() {
-                consoleLine += "-";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function appendDiv() {
-                consoleLine += "/";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function appendExp() {
-                consoleLine += "**";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function appendEq() {
-                consoleLine += "=";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
+        .row {
+            overflow-x: scroll;
+            max-height: 5%;
+            width: 200%;
+        }
+
+        .middle {
+
+        }
+
+        .right {
+            right: 0%;
+            float: right;
+        }
+
+        .large-button {
+            width: 40%;
+            height: 20%;
+        }
+    </style>
+</head>
+<body>
+<div id="repl">
+    <div id="past-input">
+
+    </div>
+    <textarea id="input" class="borderless" >&gt;</textarea>
+</div>
+</div>
+<div class="defaults">
+    <div>
+
+    </div>
+    <hr />
+    <div class="row">
+        <button onclick="appendMap()" id="map">map</button>
+        <button onclick="appendFilter()">filter</button>
+        <button onclick="appendReduce()">reduce</button>
+
+        <button onclick="appendToPrompt('+')">+</button>
+        <button onclick="appendToPrompt('-')">-</button>
+        <button onclick="appendToPrompt('*')">*</button>
+        <button onclick="appendToPrompt('**')">**</button>
+        <button onclick="appendToPrompt('=')">=</button>
+        <button onclick="appendToPrompt('%')">%</button>
+
+        <button onclick="appendToPrompt('==')">==</button>
+        <button onclick="appendToPrompt('!=')">!=</button>
+        <button onclick="appendToPrompt('<')">&lt;</button>
+        <button onclick="appendToPrompt('>')">&gt;</button>
+        <button onclick="appendToPrompt('>=')">&ge;</button>
+        <button onclick="appendToPrompt('<=')">&le;</button>
+
+        <button onclick="appendToPrompt('~')">~</button>
+        <button onclick="appendToPrompt('|')">|</button>
+        <button onclick="appendToPrompt('&')">&</button>
+        <button onclick="appendToPrompt('^')">^</button>
+        <button onclick="appendToPrompt('<<')">&lt;&lt;</button>
+        <button onclick="appendToPrompt('>>')">&gt;&gt;</button>
+    </div>
+    <hr />
+    <div>
+        <button onclick="appendToPrompt(',')">,</button>
+        <button onclick="appendLambda()">&#955;</button>
+        <button onclick="appendList()">[ ]</button>
+        <button onclick="appendVar()">var</button>
+        <button onclick="appendCond()">if</button>
+    </div>
+    <hr />
+    <div>
+        <button>math</button>
+        <button>draw</button>
+    </div>
+    <hr />
+    <div>
+    </div>
+    <div class="right">
+        <button onclick="flushLine()" class="large-button">Enter</button>
+    </div>
+    <div class="middle">
+        <button onclick="appendToPrompt('1')">1</button>
+        <button onclick="appendToPrompt('2')">2</button>
+        <button onclick="appendToPrompt('3')">3</button>
+        <br />
+        <button onclick="appendToPrompt('4')">4</button>
+        <button onclick="appendToPrompt('5')">5</button>
+        <button onclick="appendToPrompt('6')">6</button>
+        <br />
+        <button onclick="appendToPrompt('7')">7</button>
+        <button onclick="appendToPrompt('8')">8</button>
+        <button onclick="appendToPrompt('9')">9</button>
+        <br />
+        <button onclick="appendToPrompt('0')">0</button>
+        <button onclick="append5()">.</button>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
             function appendVar() {
             }
             function appendMap() {
-                consoleLine += "map(";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+                appendToPrompt("map(");
             }
             function appendFilter() {
-                consoleLine += "filter(";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+                appendToPrompt("filter(");
             }
             function appendReduce() {
-                consoleLine += "reduce(";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+                appendToPrompt("reduce(");
             }
             function appendLambda() {
                 document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
@@ -114,50 +133,32 @@
             function appendList() {
                 document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
             }
-            function append0() {
-                consoleLine += "0";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            function appendToPrompt(string) {
+                document.getElementById("input").value += string;
             }
-            function append1() {
-                consoleLine += "1";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append2() {
-                consoleLine += "2";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append3() {
-                consoleLine += "3";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append4() {
-                consoleLine += "4";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append5() {
-                consoleLine += "5";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append6() {
-                consoleLine += "6";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append7() {
-                consoleLine += "7";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append8() {
-                consoleLine += "8";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function append9() {
-                consoleLine += "9";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
+
+            //dom manip funcs
+
             function flushLine() {
-                consoleLine = "";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+                var inputElem = document.getElementById("input");
+                addLine(inputElem.value);
+
+                try{
+                    window.jsinterface.runCode(inputElem.value.substr(1));
+                } catch(err) {
+                    //addLine(err.message);
+                    //addLine(JSON.stringify(window.jsinterface));
+                }
+
+                inputElem.value = ">";
+            }
+            function printShit(string) {
+                document.getElementById("repl").innerHTML = "<p>&gt;" + "Stuff should be written" + "</p>";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + string + "</p>";
+            }
+            function addLine(string) {
+                document.getElementById("past-input").innerHTML += string + "<br />";
             }
     </script>
-    </body>
+</body>
 </html>
