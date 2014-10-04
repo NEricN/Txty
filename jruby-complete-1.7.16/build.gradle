@@ -1,2 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('jruby-complete-1.7.16.jar'))

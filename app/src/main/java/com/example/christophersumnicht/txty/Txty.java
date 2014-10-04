@@ -6,21 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import org.jruby.embed.ScriptingContainer;
-import org.jruby.embed.LocalVariableBehavior;
-
 public class Txty extends Activity {
-
-    private ScriptingContainer rubyEnv;
 
     public void onStart() {
         super.onStart();
 
-        rubyEnv = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
         WebView webView =  (WebView)findViewById(R.id.mainView);
         //enable JavaScript
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JavaToJSInterface(), "JavaToJSInterfaceVar");
         webView.loadUrl("file:///android_asset/index.html");
     }
 
@@ -48,9 +41,5 @@ public class Txty extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void addCode(String addendum) {
-        rubyEnv.runScriptlet(addendum);
     }
 }
