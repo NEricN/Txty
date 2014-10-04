@@ -44,6 +44,24 @@
                 Libraries:
                 <button>math</button>
                 <button>draw</button>
+                <button onclick="flushLine()">Enter</button>
+            </div>
+            <hr />
+            <div>
+                <button onclick="append1()">1</button>
+                <button onclick="append2()">2</button>
+                <button onclick="append3()">3</button>
+                <br />
+                <button onclick="append4()">4</button>
+                <button onclick="append5()">5</button>
+                <button onclick="append6()">6</button>
+                <br />
+                <button onclick="append7()">7</button>
+                <button onclick="append8()">8</button>
+                <button onclick="append9()">9</button>
+                <br />
+                <button onclick="append4()">0</button>
+                <button onclick="append5()">.</button>
             </div>
         </div>
     </div>
@@ -94,6 +112,46 @@
                 document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
             }
             function appendList() {
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append0() {
+                consoleLine += "0";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append1() {
+                consoleLine += "1";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append2() {
+                consoleLine += "2";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append3() {
+                consoleLine += "3";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append4() {
+                consoleLine += "4";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append5() {
+                consoleLine += "5";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append6() {
+                consoleLine += "6";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append7() {
+                consoleLine += "7";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append8() {
+                consoleLine += "8";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+            }
+            function append9() {
+                consoleLine += "9";
                 document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
             }
             function flushLine() {
