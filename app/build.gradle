@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+sourceCompatibility = JavaVersion.VERSION_1_6   //these two lines
+targetCompatibility = JavaVersion.VERSION_1_6   //are the only ones that matter
+
 android {
     compileSdkVersion 20
     buildToolsVersion "20.0.0"
