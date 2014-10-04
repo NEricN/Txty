@@ -14,6 +14,8 @@
     </head>
     <body>
     <div id="repl">
+
+    </div>
     </div>
         <div class="defaults">
             <div>
@@ -155,8 +157,15 @@
                 document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
             }
             function flushLine() {
-                consoleLine = "";
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
+                try{
+                    window.jsinterface.runCode(consoleLine);
+                } catch(err) {
+                    printShit(err.message);
+                }
+            }
+            function printShit(string) {
+                document.getElementById("repl").innerHTML = "<p>&gt;" + "Stuff should be written" + "</p>";
+                document.getElementById("repl").innerHTML = "<p>&gt;" + string + "</p>";
             }
     </script>
     </body>
