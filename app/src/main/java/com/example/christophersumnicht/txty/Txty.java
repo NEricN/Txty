@@ -7,6 +7,10 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.JavascriptInterface;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import org.jruby.compiler.ir.operands.Nil;
 import org.jruby.embed.ScriptingContainer;
 import org.jruby.embed.LocalVariableBehavior;
 
@@ -61,15 +65,45 @@ public class Txty extends Activity {
 
         @JavascriptInterface
         public String runCode(String code) {
-            System.out.println("Running:");
+            System.out.println("Run code initiated.\nRunning:");
             System.out.println(code);
-            try {
-                System.out.println((rubyEnv.runScriptlet(code)).toString());
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(baos);
+            // IMPORTANT: Save the old System.out!
+            PrintStream old = rubyEnv.getOutput();
+            // Tell Java to use your special stream
+            rubyEnv.setOutput(ps);
+
+            Object temp = rubyEnv.runScriptlet(code);
+            ps.flush();
+            String result = baos.toString();
+
+            /*try {
+                //System.out.println("here");
+                ps.flush();
+                result += "\n" + temp.toString();
+                //System.out.println("Here2");
+                //System.out.println(result);
             } catch(Exception e) {
-                System.out.println(e.getMessage());
+                ps.flush();
+                result = baos.toString();
             }
 
-            onNewData(code, webView);
+            if(result == "\n" && result == "") {
+                ps.flush();
+                result = baos.toString();
+            }*/
+            ps.flush();
+            if(temp != null) {
+                result = baos.toString() + "\n" + temp.toString();
+            } else {
+                result = baos.toString();
+            }
+
+            rubyEnv.setOutput(old);
+
+            onNewData(result, webView);
 
             return (rubyEnv.runScriptlet(code).toString());
         }
@@ -80,7 +114,12 @@ public class Txty extends Activity {
                 private String _str = str;
                 private WebView _webView = webView;
                 public void run() {
-                    _webView.loadUrl("javascript:addLine(\"" + (rubyEnv.runScriptlet(_str)).toString() + "\");");
+                    try {
+                        _webView.loadUrl("javascript:addLine(\"" + _str + "\");");
+                    } catch(Exception e) {
+                        System.out.println("Error'd!");
+                        System.out.println(e.getMessage());
+                    }
                 }
             });
         }

@@ -10,11 +10,32 @@
         }
         .defaults {
         text-align: center;
+        width: 100%;
         }
         .borderless {
         border: 0;
         outline: none;
         outline-offset: 0;
+        }
+
+        .row {
+            overflow-x: scroll;
+            max-height: 5%;
+            width: 200%;
+        }
+
+        .middle {
+
+        }
+
+        .right {
+            right: 0%;
+            float: right;
+        }
+
+        .large-button {
+            width: 40%;
+            height: 20%;
         }
     </style>
 </head>
@@ -23,29 +44,43 @@
     <div id="past-input">
 
     </div>
-    <input type="text" id="input" class="borderless" value="&gt" ></input>
+    <textarea id="input" class="borderless" >&gt;</textarea>
 </div>
 </div>
 <div class="defaults">
     <div>
-        Functional:
+
+    </div>
+    <hr />
+    <div class="row">
         <button onclick="appendMap()" id="map">map</button>
         <button onclick="appendFilter()">filter</button>
         <button onclick="appendReduce()">reduce</button>
-    </div>
-    <hr />
-    <div>
-        Operators:
+
         <button onclick="appendToPrompt('+')">+</button>
         <button onclick="appendToPrompt('-')">-</button>
         <button onclick="appendToPrompt('*')">*</button>
         <button onclick="appendToPrompt('**')">**</button>
-        <button onclick="appendToPrompt('^')">^</button>
         <button onclick="appendToPrompt('=')">=</button>
+        <button onclick="appendToPrompt('%')">%</button>
+
+        <button onclick="appendToPrompt('==')">==</button>
+        <button onclick="appendToPrompt('!=')">!=</button>
+        <button onclick="appendToPrompt('<')">&lt;</button>
+        <button onclick="appendToPrompt('>')">&gt;</button>
+        <button onclick="appendToPrompt('>=')">&ge;</button>
+        <button onclick="appendToPrompt('<=')">&le;</button>
+
+        <button onclick="appendToPrompt('~')">~</button>
+        <button onclick="appendToPrompt('|')">|</button>
+        <button onclick="appendToPrompt('&')">&</button>
+        <button onclick="appendToPrompt('^')">^</button>
+        <button onclick="appendToPrompt('<<')">&lt;&lt;</button>
+        <button onclick="appendToPrompt('>>')">&gt;&gt;</button>
     </div>
     <hr />
     <div>
-        Syntax:
+        <button onclick="appendToPrompt(',')">,</button>
         <button onclick="appendLambda()">&#955;</button>
         <button onclick="appendList()">[ ]</button>
         <button onclick="appendVar()">var</button>
@@ -53,13 +88,16 @@
     </div>
     <hr />
     <div>
-        Libraries:
         <button>math</button>
         <button>draw</button>
-        <button onclick="flushLine()">Enter</button>
     </div>
     <hr />
     <div>
+    </div>
+    <div class="right">
+        <button onclick="flushLine()" class="large-button">Enter</button>
+    </div>
+    <div class="middle">
         <button onclick="appendToPrompt('1')">1</button>
         <button onclick="appendToPrompt('2')">2</button>
         <button onclick="appendToPrompt('3')">3</button>
@@ -81,13 +119,13 @@
             function appendVar() {
             }
             function appendMap() {
-                appendToPrompt("map(")
+                appendToPrompt("map(");
             }
             function appendFilter() {
-                appendToPrompt("filter(")
+                appendToPrompt("filter(");
             }
             function appendReduce() {
-                appendToPrompt("reduce(")
+                appendToPrompt("reduce(");
             }
             function appendLambda() {
                 document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
@@ -108,8 +146,8 @@
                 try{
                     window.jsinterface.runCode(inputElem.value.substr(1));
                 } catch(err) {
-                    addLine(err.message);
-                    addLine(JSON.stringify(window.jsinterface));
+                    //addLine(err.message);
+                    //addLine(JSON.stringify(window.jsinterface));
                 }
 
                 inputElem.value = ">";
