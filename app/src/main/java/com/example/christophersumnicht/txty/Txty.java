@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.webkit.JavascriptInterface;
 
 import org.jruby.embed.ScriptingContainer;
 import org.jruby.embed.LocalVariableBehavior;
@@ -58,19 +59,30 @@ public class Txty extends Activity {
             rubyEnv = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
         }
 
+        @JavascriptInterface
         public String runCode(String code) {
             System.out.println("Running:");
             System.out.println(code);
-            System.out.println((String)(rubyEnv.runScriptlet(code)));
-            /*activity.runOnUiThread(new Runnable() {
+            try {
+                System.out.println((rubyEnv.runScriptlet(code)).toString());
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
 
-                @Override
+            onNewData(code, webView);
+
+            return (rubyEnv.runScriptlet(code).toString());
+        }
+
+        private void onNewData(final String str, final WebView webView) {
+
+            runOnUiThread(new Runnable() {
+                private String _str = str;
+                private WebView _webView = webView;
                 public void run() {
-                    webView.loadUrl("javascript:printShit(\"Hello there\")");
+                    _webView.loadUrl("javascript:addLine(\"" + (rubyEnv.runScriptlet(_str)).toString() + "\");");
                 }
-            });*/
-            webView.loadUrl("javascript:printShit(\"" + (String)(rubyEnv.runScriptlet(code)) + "\");");
-            return (String)(rubyEnv.runScriptlet(code));
+            });
         }
     }
 }
