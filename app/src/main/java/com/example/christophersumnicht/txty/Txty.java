@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import org.jruby.embed.*;
 
 public class Txty extends Activity {
 
