@@ -4,9 +4,19 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 
 public class Txty extends Activity {
+
+    public void onStart() {
+        super.onStart();
+
+        WebView webView =  (WebView)findViewById(R.id.mainView);
+        //enable JavaScript
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("file:///android_asset/index.html");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
