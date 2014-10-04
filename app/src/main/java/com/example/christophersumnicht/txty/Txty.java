@@ -14,6 +14,7 @@ public class Txty extends Activity {
         WebView webView =  (WebView)findViewById(R.id.mainView);
         //enable JavaScript
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JavaToJSInterface(), "JavaToJSInterfaceVar");
         webView.loadUrl("file:///android_asset/index.html");
     }
 

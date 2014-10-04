@@ -14,7 +14,6 @@
     </head>
     <body>
     <div id="repl">
-        <p>&gt;</p>
     </div>
         <div class="defaults">
             <div>
@@ -48,5 +47,10 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+            var consoleLine = JavaToJSInterfaceVar.getConsoleLine();
+            console.log(consoleLine);
+            document.getElementById("repl").innerHTML = "<p>" + consoleLine + "</p>";
+    </script>
     </body>
 </html>
