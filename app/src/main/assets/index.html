@@ -4,32 +4,45 @@
             #repl {
                 min-height: 400px;
             }
+            button {
+                font-size: 20px;
+            }
+            .defaults {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
     <div id="repl">
         <p>&gt;</p>
     </div>
-        <div>
+        <div class="defaults">
             <div>
-                <button>map</button>
-                <button>filter</button>
-                <button>reduce</button>
+                Functional:
+                <button id="map">map</button>
+                <button id="filter">filter</button>
+                <button id="reduce">reduce</button>
             </div>
+            <hr />
             <div>
-                <button>+</button>
-                <button>-</button>
-                <button>*</button>
-                <button>^</button>
-                <button>=</button>
+                Operators:
+                <button id="add">+</button>
+                <button id="sub">-</button>
+                <button id="mul">*</button>
+                <button id="exp">^</button>
+                <button id="eq">=</button>
             </div>
+            <hr />
             <div>
-                <button>&#955;</button>
-                <button>[]</button>
-                <button>var</button>
-                <button>if</button>
+                Syntax:
+                <button id="lam">&#955;</button>
+                <button id="arr">[ ]</button>
+                <button id="var">var</button>
+                <button id="cond">if</button>
             </div>
+            <hr />
             <div>
+                Libraries:
                 <button>math</button>
                 <button>draw</button>
             </div>
