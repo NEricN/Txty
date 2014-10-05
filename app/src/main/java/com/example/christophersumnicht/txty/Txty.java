@@ -70,14 +70,12 @@ public class Txty extends Activity {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PrintStream ps = new PrintStream(baos);
-            // IMPORTANT: Save the old System.out!
-            PrintStream old = rubyEnv.getOutput();
             // Tell Java to use your special stream
             rubyEnv.setOutput(ps);
 
             Object temp = rubyEnv.runScriptlet(code);
             ps.flush();
-            String result = baos.toString();
+            String result = ps.toString();
 
             /*try {
                 //System.out.println("here");
@@ -94,18 +92,16 @@ public class Txty extends Activity {
                 ps.flush();
                 result = baos.toString();
             }*/
-            ps.flush();
-            if(temp != null) {
-                result = baos.toString() + "\n" + temp.toString();
-            } else {
-                result = baos.toString();
+            //ps.flush();
+            try {
+                result = ps.toString().equals("") || baos.toString().equals(" ") ? temp.toString() : ps.toString() + "\n" + temp.toString();
+            } catch (Exception e) {
+                result = ps.toString();
             }
-
-            rubyEnv.setOutput(old);
 
             onNewData(result, webView);
 
-            return (rubyEnv.runScriptlet(code).toString());
+            return result;
         }
 
         private void onNewData(final String str, final WebView webView) {
@@ -115,7 +111,7 @@ public class Txty extends Activity {
                 private WebView _webView = webView;
                 public void run() {
                     try {
-                        _webView.loadUrl("javascript:addLine(\"" + _str + "\");");
+                        _webView.loadUrl("javascript:addLine(\"" + _str.replaceAll("\\r?\\n", "<br />") + "\");");
                     } catch(Exception e) {
                         System.out.println("Error'd!");
                         System.out.println(e.getMessage());

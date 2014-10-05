@@ -2,15 +2,14 @@
 <head>
     <style>
         #repl {
-        height: 400px;
         overflow-y: scroll;
         }
         button {
         font-size: 20px;
         }
         .defaults {
-        text-align: center;
         width: 100%;
+        overflow-x: hidden;
         }
         .borderless {
         border: 0;
@@ -20,12 +19,12 @@
 
         .row {
             overflow-x: scroll;
-            max-height: 5%;
-            width: 200%;
+            white-space: nowrap;
+            width: 100%;
         }
 
         .middle {
-
+            text-align: center;
         }
 
         .right {
@@ -44,24 +43,19 @@
     <div id="past-input">
 
     </div>
-    <textarea id="input" class="borderless" >&gt;</textarea>
+    <textarea id="input" class="borderless" rows="20" cols="60">&gt;</textarea>
 </div>
 </div>
-<div class="defaults">
+<div class="defaults" id="keyboard">
     <div>
 
     </div>
     <hr />
     <div class="row">
-        <button onclick="appendMap()" id="map">map</button>
-        <button onclick="appendFilter()">filter</button>
-        <button onclick="appendReduce()">reduce</button>
-
         <button onclick="appendToPrompt('+')">+</button>
         <button onclick="appendToPrompt('-')">-</button>
         <button onclick="appendToPrompt('*')">*</button>
         <button onclick="appendToPrompt('**')">**</button>
-        <button onclick="appendToPrompt('=')">=</button>
         <button onclick="appendToPrompt('%')">%</button>
 
         <button onclick="appendToPrompt('==')">==</button>
@@ -79,60 +73,83 @@
         <button onclick="appendToPrompt('>>')">&gt;&gt;</button>
     </div>
     <hr />
-    <div>
-        <button onclick="appendToPrompt(',')">,</button>
-        <button onclick="appendLambda()">&#955;</button>
-        <button onclick="appendList()">[ ]</button>
-        <button onclick="appendVar()">var</button>
-        <button onclick="appendCond()">if</button>
+    <div id="functions" class="row">
+        <button onclick="appendToPrompt('def ')">def</button>
+        <button onclick="appendMap()" id="map">map</button>
+        <button onclick="appendFilter()">filter</button>
+        <button onclick="appendReduce()">reduce</button>
     </div>
     <hr />
-    <div>
-        <button>math</button>
-        <button>draw</button>
+    <div id="variables" class="row">
+        <button onclick="appendToPrompt('=')">=</button>
+        <button onclick="appendToPrompt('x')">x</button>
+        <button onclick="appendToPrompt('y')">y</button>
+        <button onclick="appendToPrompt('z')">z</button>
+        <button onclick="appendToPrompt('i')">i</button>
+        <button onclick="appendToPrompt('j')">j</button>
+        <button onclick="appendToPrompt('k')">k</button>
     </div>
     <hr />
-    <div>
+    <div class="row">
+        <button onclick="appendToPrompt(', ')">,</button>
+        <button onclick="appendToPrompt('lambda ')">&#955;</button>
+        <button onclick="appendBracket('[', '[')">[</button>
+        <button onclick="appendBracket('{', '{')">{</button>
+        <button onclick="appendBracket('(', '(')">(</button>
+        <button onclick="popBracket()">]})</button>
+        <button onclick="appendToPrompt('if ')">if</button>
+        <button onclick="appendToPrompt('do ')">do</button>
+        <button onclick="appendToPrompt('else ')">else</button>
+        <button onclick="appendToPrompt('end')">end</button>
     </div>
-    <div class="right">
-        <button onclick="flushLine()" class="large-button">Enter</button>
-    </div>
-    <div class="middle">
+    <hr />
+    <div class="row">
+        <button onclick="appendToPrompt('0')">0</button>
         <button onclick="appendToPrompt('1')">1</button>
         <button onclick="appendToPrompt('2')">2</button>
         <button onclick="appendToPrompt('3')">3</button>
-        <br />
         <button onclick="appendToPrompt('4')">4</button>
         <button onclick="appendToPrompt('5')">5</button>
         <button onclick="appendToPrompt('6')">6</button>
-        <br />
         <button onclick="appendToPrompt('7')">7</button>
         <button onclick="appendToPrompt('8')">8</button>
         <button onclick="appendToPrompt('9')">9</button>
-        <br />
-        <button onclick="appendToPrompt('0')">0</button>
-        <button onclick="append5()">.</button>
+    </div>
+    <hr />
+    <div class="row">
+        <button>...</button>
+        <button onclick="appendToPrompt('\n')">New Line</button>
+        <button onclick="flushLine()">Calculate</button>
     </div>
 </div>
 </div>
 <script type="text/javascript">
-            function appendVar() {
+            var repl = document.getElementById("repl");
+            var keyboard = document.getElementById("keyboard");
+
+            repl.style.height = (document.body.scrollHeight - keyboard.scrollHeight - 20) + "px";
+
+            var variables = ['x', 'y', 'z', 'i', 'j', 'k'];
+            var currentBrackets = [];
+            var brackets = {
+                '{':'}',
+                '|':'|',
+                '(':')',
+                '<':'>',
+                '[':']'
             }
-            function appendMap() {
-                appendToPrompt("map(");
+
+            function popBracket() {
+                if(a.length) {
+                    appendToPrompt(currentBrackets.pop());
+                }
             }
-            function appendFilter() {
-                appendToPrompt("filter(");
+
+            function appendBracket(txt, bracket) {
+                currentBrackets.push(brackets[bracket]);
+                appendToPrompt(txt);
             }
-            function appendReduce() {
-                appendToPrompt("reduce(");
-            }
-            function appendLambda() {
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
-            function appendList() {
-                document.getElementById("repl").innerHTML = "<p>&gt;" + consoleLine + "</p>";
-            }
+
             function appendToPrompt(string) {
                 document.getElementById("input").value += string;
             }
