@@ -57,10 +57,15 @@ public class Txty extends Activity {
         private ScriptingContainer rubyEnv;
         private WebView webView;
         private Activity activity;
+        private ByteArrayOutputStream baos;
+        private PrintStream ps;
         JavaScriptInterface (WebView webView, Activity activity) {
             this.webView = webView;
             this.activity = activity;
+            this.baos = new ByteArrayOutputStream();
+            this.ps = new PrintStream(baos);
             rubyEnv = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
+            rubyEnv.setOutput(ps);
         }
 
         @JavascriptInterface
@@ -68,14 +73,15 @@ public class Txty extends Activity {
             System.out.println("Run code initiated.\nRunning:");
             System.out.println(code);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
+            //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            //PrintStream ps = new PrintStream(baos);
             // Tell Java to use your special stream
-            rubyEnv.setOutput(ps);
+            //rubyEnv.setOutput(ps);
 
             Object temp = rubyEnv.runScriptlet(code);
             ps.flush();
-            String result = ps.toString();
+            String result = baos.toString();
+            baos.reset();
 
             /*try {
                 //System.out.println("here");
@@ -94,9 +100,8 @@ public class Txty extends Activity {
             }*/
             //ps.flush();
             try {
-                result = ps.toString().equals("") || baos.toString().equals(" ") ? temp.toString() : ps.toString() + "\n" + temp.toString();
+                result = result.equals("") || result.equals(" ") ? temp.toString() : result + "\n" + temp.toString();
             } catch (Exception e) {
-                result = ps.toString();
             }
 
             onNewData(result, webView);

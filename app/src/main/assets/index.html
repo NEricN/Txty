@@ -43,7 +43,9 @@
     <div id="past-input">
 
     </div>
+    <div>
     <textarea id="input" class="borderless" rows="20" cols="60">&gt;</textarea>
+    </div>
 </div>
 </div>
 <div class="defaults" id="keyboard">
@@ -75,9 +77,10 @@
     <hr />
     <div id="functions" class="row">
         <button onclick="appendToPrompt('def ')">def</button>
-        <button onclick="appendMap()" id="map">map</button>
-        <button onclick="appendFilter()">filter</button>
-        <button onclick="appendReduce()">reduce</button>
+        <button onclick="appendBracket('map(', '(')"" id="map">map</button>
+        <button onclick="appendBracket('filter(', '(')">filter</button>
+        <button onclick="appendBracket('reduce(', '(')"">reduce</button>
+        <button onclick="appendToPrompt('print ')">print</button>
     </div>
     <hr />
     <div id="variables" class="row">
@@ -96,7 +99,8 @@
         <button onclick="appendBracket('[', '[')">[</button>
         <button onclick="appendBracket('{', '{')">{</button>
         <button onclick="appendBracket('(', '(')">(</button>
-        <button onclick="popBracket()">]})</button>
+        <button onclick="appendBracket('|', '|')">|</button>
+        <button onclick="popBracket()">]}|)</button>
         <button onclick="appendToPrompt('if ')">if</button>
         <button onclick="appendToPrompt('do ')">do</button>
         <button onclick="appendToPrompt('else ')">else</button>
@@ -117,7 +121,8 @@
     </div>
     <hr />
     <div class="row">
-        <button>...</button>
+        <button onclick="appendToPrompt('   ')">Tab</button>
+        <button onclick="appendToPrompt('   ')">Tab</button>
         <button onclick="appendToPrompt('\n')">New Line</button>
         <button onclick="flushLine()">Calculate</button>
     </div>
@@ -130,6 +135,7 @@
             repl.style.height = (document.body.scrollHeight - keyboard.scrollHeight - 20) + "px";
 
             var variables = ['x', 'y', 'z', 'i', 'j', 'k'];
+            var functions = ['map', 'filter', 'reduce'];
             var currentBrackets = [];
             var brackets = {
                 '{':'}',
@@ -154,11 +160,53 @@
                 document.getElementById("input").value += string;
             }
 
+            function removeChar() {
+                var temp = document.getElementById("input").value.pop();
+
+                if(brackets[temp]){
+                    currentBrackets.pop();
+                }
+            }
+
+            function addFunction(func) {
+                if(functions.indexOf(func) == -1) {
+                    functions.push(func);
+                    var funcArr = document.getElementById("functions");
+                    funcArr.innerHTML += "<button onclick=\"appendToPrompt('"+ func + " ')\">" + func + "</button>";
+                }
+            }
+
+            function addVariable(vari) {
+                if(variables.indexOf(vari) == -1) {
+                    variables.push(vari);
+                    var varArr = document.getElementById("variables");
+                    varArr.innerHTML += "<button onclick=\"appendToPrompt('"+ vari + "')\">" + vari + "</button>";
+                }
+            }
+
             //dom manip funcs
 
             function flushLine() {
                 var inputElem = document.getElementById("input");
-                addLine(inputElem.value);
+
+                var temp = inputElem.value.match(/def\s*[^\n\r\(\s]+[\n\r\(][\s\S]*end/g);
+                if(temp) {
+                    temp.forEach(function(x) {
+                        addFunction(x.match(/def\s*([^\n\r\(\s]+)[\(\n\r][\s\S]*end/)[1]);
+                    });
+                }
+
+                temp = inputElem.value.match(/[A-Za-z][A-Za-z0-9_]+\s*=\s*.+/g);
+                console.log(temp);
+                if(temp) {
+                    temp.forEach(function(x) {
+                        addVariable(x.match(/([A-Za-z][A-Za-z0-9_]*)\s*=\s*.+/)[1]);
+                    });
+                }
+
+                addLine(inputElem.value.split(/\r?\n/).map(function(x) {
+                    return x[0] != ">" ? ">" + x : x;
+                }).join("<br />"));
 
                 try{
                     window.jsinterface.runCode(inputElem.value.substr(1));
