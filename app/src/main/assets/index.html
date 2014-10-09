@@ -2,19 +2,69 @@
 <head>
     <style>
         #repl {
-        overflow-y: scroll;
+            overflow-y: scroll;
+            background: #f7f7f7; /* Old browsers */
+            background: linear-gradient(to bottom,  #f7f7f7 0%,#efefef 100%); /* W3C */
         }
+
+        hr {
+            border-color: #4c4c4c;
+        }
+
+
+
+
         button {
-        font-size: 20px;
+            font-size: 20px;
+
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+
+            border: none;
+
+            border-top: 1px solid #ffffff;
+            background: #006eb3;
+            background: -webkit-gradient(linear, left top, left bottom, from(#00aeff), to(#006eb3));
+            background: -webkit-linear-gradient(top, #00aeff, #006eb3);
+            padding: 4px 8px;
+            box-shadow: rgba(0,0,0,1) 0 1px 0;
+            text-shadow: rgba(0,0,0,.4) 0 1px 0;
+            color: #ffffff;
+            //font-size: 24px;
+            //font-family: Georgia, san-serif;
+            text-decoration: none;
+            vertical-align: middle;
+
+
+       }
+
+        button:hover {
+        border-top-color: #2c5673;
+        background: #2c5673;
+        color: #000000;
         }
+        button:active {
+        border-top-color: #0076c4;
+        background: #0076c4;
+        }
+
         .defaults {
-        width: 100%;
-        overflow-x: hidden;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .dark-background {
+            background-color: #2c2c2c;
         }
         .borderless {
         border: 0;
         outline: none;
         outline-offset: 0;
+        }
+
+        .transparent {
+            background-color: transparent;
         }
 
         .row {
@@ -33,22 +83,28 @@
         }
 
         .large-button {
-            width: 40%;
-            height: 20%;
+            width: 33%;
+            font-size: 25px;
+        }
+
+        .medium-button {
+            width: calc(50% - 180px);
+            min-width: 60px;
+            font-size: 25px;
         }
     </style>
 </head>
-<body>
-<div id="repl">
+<body class="dark-background">
+<div id="repl" class="repl">
     <div id="past-input">
 
     </div>
     <div>
-    <textarea id="input" class="borderless" rows="20" cols="60">&gt;</textarea>
+    <textarea id="input" class="borderless transparent" rows="20" cols="60">&gt;</textarea>
     </div>
 </div>
 </div>
-<div class="defaults" id="keyboard">
+<div class="defaults transparent" id="keyboard">
     <div>
 
     </div>
@@ -105,9 +161,11 @@
         <button onclick="appendToPrompt('do ')">do</button>
         <button onclick="appendToPrompt('else ')">else</button>
         <button onclick="appendToPrompt('end')">end</button>
+        <button onclick="appendToPrompt('return ')">return</button>
     </div>
     <hr />
-    <div class="row">
+    <div class="row" style="text-align: center">
+        <button onclick="appendToPrompt('    ')" class="medium-button">Tab</button>
         <button onclick="appendToPrompt('0')">0</button>
         <button onclick="appendToPrompt('1')">1</button>
         <button onclick="appendToPrompt('2')">2</button>
@@ -118,13 +176,13 @@
         <button onclick="appendToPrompt('7')">7</button>
         <button onclick="appendToPrompt('8')">8</button>
         <button onclick="appendToPrompt('9')">9</button>
+        <button onclick="backSpace()" class="medium-button">Back</button>
     </div>
     <hr />
     <div class="row">
-        <button onclick="appendToPrompt('   ')">Tab</button>
-        <button onclick="appendToPrompt('   ')">Tab</button>
-        <button onclick="appendToPrompt('\n')">New Line</button>
-        <button onclick="flushLine()">Calculate</button>
+        <button class="large-button" onclick="appendToPrompt('\n')">New Line</button>
+        <button class="large-button" onclick="appendToPrompt(' ')">Space</button>
+        <button class="large-button" onclick="flushLine()">Run</button>
     </div>
 </div>
 </div>
@@ -145,8 +203,17 @@
                 '[':']'
             }
 
+            function backSpace() {
+                var temp = document.getElementById("input");
+
+                if(temp.value.length > 1) {
+                    var tempChar = temp.value[temp.value.length-1];
+                    temp.value = temp.value.substr(0, temp.value.length - 1);
+                }
+            }
+
             function popBracket() {
-                if(a.length) {
+                if(currentBrackets.length) {
                     appendToPrompt(currentBrackets.pop());
                 }
             }
@@ -196,7 +263,7 @@
                     });
                 }
 
-                temp = inputElem.value.match(/[A-Za-z][A-Za-z0-9_]+\s*=\s*.+/g);
+                temp = inputElem.value.match(/[A-Za-z][A-Za-z0-9_]*\s*=\s*.+/g);
                 console.log(temp);
                 if(temp) {
                     temp.forEach(function(x) {

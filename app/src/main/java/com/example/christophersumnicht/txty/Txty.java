@@ -70,8 +70,8 @@ public class Txty extends Activity {
 
         @JavascriptInterface
         public String runCode(String code) {
-            System.out.println("Run code initiated.\nRunning:");
-            System.out.println(code);
+            //System.out.println("Run code initiated.\nRunning:");
+            //System.out.println(code);
 
             //ByteArrayOutputStream baos = new ByteArrayOutputStream();
             //PrintStream ps = new PrintStream(baos);
@@ -118,8 +118,8 @@ public class Txty extends Activity {
                     try {
                         _webView.loadUrl("javascript:addLine(\"" + _str.replaceAll("\\r?\\n", "<br />") + "\");");
                     } catch(Exception e) {
-                        System.out.println("Error'd!");
-                        System.out.println(e.getMessage());
+                        //System.out.println("Error'd!");
+                        //System.out.println(e.getMessage());
                     }
                 }
             });
